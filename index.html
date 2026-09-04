@@ -1,155 +1,1149 @@
 <!DOCTYPE html>
-<!--
-  ================================================================
-  READ THIS BEFORE YOU PASTE ANYTHING
-
-  When Gemini gives you a page, you do NOT paste it into a part of
-  this file. You replace the entire file.
-
-  Click into the editor, press Ctrl+A (Cmd+A on Mac), press Delete,
-  then paste. Everything here is meant to be thrown away.
-
-  Do that only AFTER your live link works. Get the link first.
-  ================================================================
--->
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>My first site</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Unbounded:wght@600;800&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --navy: #0d1d30;
-    --card: #142a44;
-    --line: #27466a;
-    --aqua: #6de1d7;
-    --text: #ffffff;
-    --muted: #94a9bf;
-  }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    background: var(--navy);
-    color: var(--text);
-    font-family: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
-    line-height: 1.6;
-    display: flex;
-    justify-content: center;
-    padding: 6vh 20px;
-  }
-  main { width: 100%; max-width: 640px; }
-  .badge {
-    display: inline-block;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--aqua);
-    margin-bottom: 18px;
-  }
-  h1 {
-    font-family: "Unbounded", "Manrope", sans-serif;
-    font-weight: 800;
-    font-size: clamp(38px, 9vw, 68px);
-    letter-spacing: -0.05em;
-    line-height: 1.02;
-    margin: 0 0 8px;
-  }
-  .name {
-    font-family: "Unbounded", "Manrope", sans-serif;
-    font-weight: 600;
-    font-size: clamp(18px, 4vw, 24px);
-    letter-spacing: -0.04em;
-    color: var(--aqua);
-    margin: 0 0 24px;
-  }
-  p.lead { font-size: 18px; color: var(--muted); margin: 0 0 34px; }
-  .card {
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 26px 28px;
-    margin-bottom: 18px;
-  }
-  .card h2 {
-    font-family: "Unbounded", "Manrope", sans-serif;
-    font-weight: 600;
-    font-size: 15px;
-    letter-spacing: -0.03em;
-    text-transform: uppercase;
-    color: var(--aqua);
-    margin: 0 0 16px;
-  }
-  ol { margin: 0; padding-left: 20px; }
-  li { margin-bottom: 12px; color: var(--muted); }
-  li:last-child { margin-bottom: 0; }
-  li b { color: var(--text); font-weight: 700; }
-  code {
-    font-family: ui-monospace, "SF Mono", Consolas, monospace;
-    font-size: 0.92em;
-    background: #0a1727;
-    border: 1px solid var(--line);
-    border-radius: 5px;
-    padding: 1px 6px;
-    color: var(--aqua);
-  }
-  a { color: var(--aqua); }
-  footer {
-    margin-top: 30px;
-    font-size: 14px;
-    color: #6e839a;
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HACK THE FORCE // Galactic Vibe Coding Tournament</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-base: #030712;
+      --faction-color: #00f0ff;
+      --faction-glow: rgba(0, 240, 255, 0.4);
+      --faction-secondary: #0088ff;
+      --card-bg: rgba(10, 18, 36, 0.65);
+      --border-color: rgba(0, 240, 255, 0.25);
+      --text-main: #f0f6fc;
+      --text-dim: #8b949e;
+      --saber-length: 100%;
+    }
+
+    [data-faction="sith"] {
+      --faction-color: #ff0044;
+      --faction-glow: rgba(255, 0, 68, 0.45);
+      --faction-secondary: #990022;
+      --card-bg: rgba(25, 8, 14, 0.65);
+      --border-color: rgba(255, 0, 68, 0.3);
+    }
+
+    [data-faction="mando"] {
+      --faction-color: #ffb700;
+      --faction-glow: rgba(255, 183, 0, 0.45);
+      --faction-secondary: #cc7a00;
+      --card-bg: rgba(24, 18, 8, 0.65);
+      --border-color: rgba(255, 183, 0, 0.3);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      font-family: 'Rajdhani', sans-serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* Background Canvas */
+    #starfield {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Scanline Grid Effect */
+    .overlay-scanlines {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+      background-size: 100% 4px;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    /* Content Wrapper */
+    .app-container {
+      position: relative;
+      z-index: 2;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 1.5rem;
+    }
+
+    /* Navigation Bar */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      margin-bottom: 2rem;
+      box-shadow: 0 0 20px var(--faction-glow);
+      transition: all 0.4s ease;
+    }
+
+    .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 900;
+      font-size: 1.5rem;
+      letter-spacing: 2px;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo span {
+      color: var(--faction-color);
+      text-shadow: 0 0 10px var(--faction-color);
+      transition: all 0.4s ease;
+    }
+
+    .faction-selector {
+      display: flex;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 4px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .faction-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      letter-spacing: 1px;
+    }
+
+    .faction-btn.active {
+      color: #000;
+      background: var(--faction-color);
+      box-shadow: 0 0 12px var(--faction-color);
+    }
+
+    /* Lightsaber Divider Glow */
+    .saber-divider {
+      height: 3px;
+      width: 100%;
+      background: #fff;
+      box-shadow: 0 0 10px var(--faction-color), 0 0 20px var(--faction-color), 0 0 30px var(--faction-color);
+      border-radius: 2px;
+      margin: 2rem 0;
+      position: relative;
+      transition: all 0.4s ease;
+    }
+
+    .saber-divider::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: -4px;
+      width: 20px;
+      height: 11px;
+      background: #888;
+      border-radius: 2px;
+      box-shadow: inset 0 0 4px #000;
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 3rem 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.8rem;
+      color: var(--faction-color);
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--faction-color);
+      padding: 6px 16px;
+      border-radius: 20px;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 0 10px var(--faction-glow);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .hero-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3.5rem;
+      font-weight: 900;
+      line-height: 1.1;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+      background: linear-gradient(180deg, #ffffff 30%, var(--faction-color) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 30px var(--faction-glow);
+    }
+
+    .hero-subtitle {
+      font-size: 1.3rem;
+      color: var(--text-dim);
+      max-width: 750px;
+      margin-bottom: 2.5rem;
+      line-height: 1.6;
+    }
+
+    /* Countdown Widget */
+    .timer-container {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .timer-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      backdrop-filter: blur(8px);
+      padding: 1rem 1.5rem;
+      border-radius: 10px;
+      min-width: 90px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    .timer-value {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .timer-label {
+      font-size: 0.75rem;
+      color: var(--faction-color);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 4px;
+    }
+
+    /* Actions */
+    .cta-group {
+      display: flex;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-primary {
+      background: var(--faction-color);
+      color: #030712;
+      box-shadow: 0 0 20px var(--faction-glow);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 0 35px var(--faction-color);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      backdrop-filter: blur(8px);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--faction-color);
+      color: var(--faction-color);
+    }
+
+    /* Main Grid Layout */
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 1.8rem;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      transition: border-color 0.4s ease, box-shadow 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--faction-color), transparent);
+      opacity: 0.6;
+    }
+
+    .card-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card-title-icon {
+      color: var(--faction-color);
+    }
+
+    /* Track Cards (Col 4) */
+    .col-4 { grid-column: span 4; }
+    .col-6 { grid-column: span 6; }
+    .col-8 { grid-column: span 8; }
+    .col-12 { grid-column: span 12; }
+
+    @media (max-width: 992px) {
+      .col-4, .col-6, .col-8 { grid-column: span 12; }
+      .hero-title { font-size: 2.5rem; }
+    }
+
+    .track-badge {
+      font-size: 0.7rem;
+      font-family: 'Orbitron', sans-serif;
+      padding: 3px 8px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 4px;
+      color: var(--faction-color);
+      float: right;
+    }
+
+    .track-desc {
+      color: var(--text-dim);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin-bottom: 1.2rem;
+    }
+
+    .track-prize {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.1rem;
+      color: var(--text-main);
+      font-weight: 700;
+    }
+
+    /* Vibe Prompt Holocron Generator Sandbox */
+    .holocron-box {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 1.2rem;
+      margin-top: 1rem;
+    }
+
+    .prompt-output {
+      font-family: monospace;
+      font-size: 0.95rem;
+      color: #00ffaa;
+      min-height: 60px;
+      word-break: break-word;
+      line-height: 1.4;
+    }
+
+    /* Leaderboard Table */
+    .leaderboard-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .leaderboard-table th {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.8rem;
+      color: var(--faction-color);
+      text-transform: uppercase;
+      padding: 12px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .leaderboard-table td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.95rem;
+    }
+
+    .rank-num {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 800;
+      color: var(--faction-color);
+    }
+
+    .badge-faction {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .badge-jedi { background: rgba(0, 240, 255, 0.15); color: #00f0ff; border: 1px solid #00f0ff; }
+    .badge-sith { background: rgba(255, 0, 68, 0.15); color: #ff0044; border: 1px solid #ff0044; }
+    .badge-mando { background: rgba(255, 183, 0, 0.15); color: #ffb700; border: 1px solid #ffb700; }
+
+    /* Interactive Terminal Window */
+    .terminal {
+      background: #050a14;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      font-family: 'Courier New', Courier, monospace;
+      padding: 1rem;
+      box-shadow: inset 0 0 15px rgba(0,0,0,0.8);
+      position: relative;
+    }
+
+    .terminal-header {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .dot { width: 10px; height: 10px; border-radius: 50%; background: #ff5f56; }
+    .dot:nth-child(2) { background: #ffbd2e; }
+    .dot:nth-child(3) { background: #27c93f; }
+
+    .terminal-body {
+      color: #33ff77;
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+
+    .terminal-line { margin-bottom: 6px; }
+    .terminal-prompt { color: var(--faction-color); }
+
+    /* Hyperspace Toggle Floating Control */
+    .hyperspace-btn {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 100;
+      background: var(--card-bg);
+      border: 1px solid var(--faction-color);
+      color: var(--text-main);
+      padding: 12px 20px;
+      border-radius: 30px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 800;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 20px var(--faction-glow);
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hyperspace-btn:hover {
+      transform: scale(1.05);
+      background: var(--faction-color);
+      color: #000;
+    }
+
+    /* Modal Dialog */
+    .modal-backdrop {
+      position: fixed;
+      top:0; left:0; width:100%; height:100%;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-backdrop.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal-card {
+      background: var(--bg-base);
+      border: 1px solid var(--faction-color);
+      box-shadow: 0 0 40px var(--faction-glow);
+      width: 90%;
+      max-width: 500px;
+      border-radius: 16px;
+      padding: 2rem;
+      position: relative;
+      transform: translateY(20px);
+      transition: transform 0.3s ease;
+    }
+
+    .modal-backdrop.open .modal-card {
+      transform: translateY(0);
+    }
+
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+
+    .form-label {
+      display: block;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.8rem;
+      color: var(--faction-color);
+      margin-bottom: 6px;
+    }
+
+    .form-input, .form-select {
+      width: 100%;
+      padding: 12px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 8px;
+      color: var(--text-main);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+
+    .form-input:focus, .form-select:focus {
+      border-color: var(--faction-color);
+      box-shadow: 0 0 10px var(--faction-glow);
+    }
+
+    .form-select option {
+      background: #0d1117;
+      color: #fff;
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 1.2rem;
+      right: 1.2rem;
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .close-modal:hover { color: #fff; }
+
+    /* Audio Indicator */
+    .audio-tag {
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .audio-wave {
+      display: inline-block;
+      width: 3px; height: 10px;
+      background: var(--faction-color);
+      animation: synthWave 0.8s infinite alternate;
+    }
+    .audio-wave:nth-child(2) { animation-delay: 0.2s; }
+    .audio-wave:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes synthWave {
+      0% { height: 4px; }
+      100% { height: 14px; }
+    }
+  </style>
 </head>
-<body>
-<main>
+<body data-faction="jedi">
 
-  <span class="badge">Cal Poly Vibe Coding &middot; Session 01</span>
+  <!-- Interactive Starfield Canvas -->
+  <canvas id="starfield"></canvas>
+  <div class="overlay-scanlines"></div>
 
-  <h1>It&rsquo;s live.</h1>
+  <!-- Main Container -->
+  <div class="app-container">
 
-  <!-- Step 5: change the name below to yours, then commit. -->
-  <p class="name">Built by YOUR NAME HERE</p>
+    <!-- Top Navigation -->
+    <nav>
+      <div class="logo">
+        ⚡ HACK THE <span>FORCE</span>
+      </div>
 
-  <p class="lead">
-    This page is on the internet. Anyone you send this link to can open it,
-    on any device, right now. You made that happen in about five minutes.
-  </p>
+      <div style="display:flex; align-items:center; gap: 15px;">
+        <div class="audio-tag">
+          <div class="audio-wave"></div>
+          <div class="audio-wave"></div>
+          <div class="audio-wave"></div>
+          WEB AUDIO FX ACTIVE
+        </div>
 
-  <div class="card">
-    <h2>Three things, in this order</h2>
-    <ol>
-      <li><b>Put your name on it.</b> Edit <code>index.html</code>, change
-        YOUR NAME HERE above, commit, refresh this page.</li>
-      <li><b>Submit this link.</b> Go to
-        <a href="https://www.calpolyvibecoding.com/">calpolyvibecoding.com</a>,
-        make an account, and paste this URL in. That is how you get counted,
-        and how Claude seats get assigned.</li>
-      <li><b>Then build.</b> Open Gemini, get a page, and replace this entire
-        file with it.</li>
-    </ol>
+        <div class="faction-selector">
+          <button class="faction-btn active" onclick="switchFaction('jedi')">JEDI</button>
+          <button class="faction-btn" onclick="switchFaction('sith')">SITH</button>
+          <button class="faction-btn" onclick="switchFaction('mando')">GUILD</button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Header -->
+    <section class="hero">
+      <div class="hero-badge">🪐 Sector 001 // Galactic Hackathon Series</div>
+      <h1 class="hero-title">Vibe Code Your Path<br>To Grand Master</h1>
+      <p class="hero-subtitle">
+        May the Prompts be with you. Channel your inner Force, synthesize autonomous agents, speed-run parsec algorithms, and manifest pure dark-side AI magic in 48 galactic hours.
+      </p>
+
+      <!-- Countdown -->
+      <div class="timer-container">
+        <div class="timer-card">
+          <div class="timer-value" id="days">02</div>
+          <div class="timer-label">Days</div>
+        </div>
+        <div class="timer-card">
+          <div class="timer-value" id="hours">14</div>
+          <div class="timer-label">Hours</div>
+        </div>
+        <div class="timer-card">
+          <div class="timer-value" id="mins">38</div>
+          <div class="timer-label">Mins</div>
+        </div>
+        <div class="timer-card">
+          <div class="timer-value" id="secs">52</div>
+          <div class="timer-label">Secs</div>
+        </div>
+      </div>
+
+      <!-- Hero Actions -->
+      <div class="cta-group">
+        <button class="btn btn-primary" onclick="openRegisterModal()">
+          <span>🛡️ Transponder Register</span>
+        </button>
+        <button class="btn btn-secondary" onclick="scrollToSection('holocron')">
+          <span>🔮 Holocron Generator</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Saber Glow Divider -->
+    <div class="saber-divider"></div>
+
+    <!-- Main Content Grid -->
+    <div class="grid-container">
+
+      <!-- Track 1 -->
+      <div class="card col-4">
+        <span class="track-badge">TRACK 01</span>
+        <h3 class="card-title">
+          <span class="card-title-icon">⚔️</span> Holocron AI Agents
+        </h3>
+        <p class="track-desc">
+          Build multi-agent swarm intelligence systems capable of parsing Sith holocrons or translating 6 million forms of galactic communication automatically.
+        </p>
+        <div class="track-prize">🏆 Prize: 10,000 Beskar Credits</div>
+      </div>
+
+      <!-- Track 2 -->
+      <div class="card col-4">
+        <span class="track-badge">TRACK 02</span>
+        <h3 class="card-title">
+          <span class="card-title-icon">🚀</span> Kessel Run Speed
+        </h3>
+        <p class="track-desc">
+          Minimalist code golfing & vibe prompting. Build hyper-optimized, zero-dependency space navigation applications in less than 12 parsecs of latency.
+        </p>
+        <div class="track-prize">🏆 Prize: Kyber Crystal Processor</div>
+      </div>
+
+      <!-- Track 3 -->
+      <div class="card col-4">
+        <span class="track-badge">TRACK 03</span>
+        <h3 class="card-title">
+          <span class="card-title-icon">🤖</span> Death Star Protocol
+        </h3>
+        <p class="track-desc">
+          Defensive cybersecurity and low-level code vulnerabilities. Patch thermal exhaust ports before rogue rebel prompts breach your main core reactor.
+        </p>
+        <div class="track-prize">🏆 Prize: Imperial Commendation</div>
+      </div>
+
+      <!-- Interactive Holocron Prompt Synthesizer Sandbox -->
+      <div class="card col-8" id="holocron">
+        <h3 class="card-title">
+          <span class="card-title-icon">🔮</span> Kyber Vibe Prompt Synthesizer
+        </h3>
+        <p class="track-desc">
+          Need inspiration for your hackathon submission? Activate the Jedi/Sith Holocron to synthesize a Star Wars vibe coding prompt.
+        </p>
+
+        <div class="holocron-box">
+          <div class="prompt-output" id="promptDisplay">
+            > Initializing Holocron matrix... Press button below to extract prompt stream.
+          </div>
+        </div>
+
+        <div style="margin-top: 1.2rem; display: flex; gap: 10px;">
+          <button class="btn btn-primary" style="padding: 0.7rem 1.2rem; font-size: 0.85rem;" onclick="generateVibePrompt()">
+            ⚡ Channel Force Prompt
+          </button>
+          <button class="btn btn-secondary" style="padding: 0.7rem 1.2rem; font-size: 0.85rem;" onclick="copyPrompt()">
+            📋 Copy Matrix
+          </button>
+        </div>
+      </div>
+
+      <!-- Terminal / System Status -->
+      <div class="card col-4">
+        <h3 class="card-title">
+          <span class="card-title-icon">💻</span> Imperial Console
+        </h3>
+        <div class="terminal">
+          <div class="terminal-header">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+          </div>
+          <div class="terminal-body" id="terminalLog">
+            <div class="terminal-line"><span class="terminal-prompt">[SYSTEM]:</span> Holonet connection stable.</div>
+            <div class="terminal-line"><span class="terminal-prompt">[JEDI_NET]:</span> 1,420 Vibers online.</div>
+            <div class="terminal-line"><span class="terminal-prompt">[SITH_CORE]:</span> Dark side prompt engines primed.</div>
+            <div class="terminal-line"><span class="terminal-prompt">[ALERT]:</span> Hyperspace speed unlocked.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Leaderboard -->
+      <div class="card col-12">
+        <h3 class="card-title" style="justify-content: space-between;">
+          <span><span class="card-title-icon">📡</span> Holonet Live Leaderboard</span>
+          <span style="font-size: 0.8rem; color: var(--text-dim); font-weight: normal;">Updated 2 mins ago</span>
+        </h3>
+
+        <table class="leaderboard-table">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Codename</th>
+              <th>Faction</th>
+              <th>Project Vibe</th>
+              <th>Telemetry Score</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboardBody">
+            <tr>
+              <td class="rank-num">#01</td>
+              <td><strong>Master_Yoda_Claude</strong></td>
+              <td><span class="badge-faction badge-jedi">Jedi</span></td>
+              <td>Dagobah Eco-System Simulator</td>
+              <td>9,980 PTS</td>
+            </tr>
+            <tr>
+              <td class="rank-num">#02</td>
+              <td><strong>Darth_Promptor</strong></td>
+              <td><span class="badge-faction badge-sith">Sith</span></td>
+              <td>DeathStar-Agentic-LLM</td>
+              <td>9,840 PTS</td>
+            </tr>
+            <tr>
+              <td class="rank-num">#03</td>
+              <td><strong>MandoCoder_42</strong></td>
+              <td><span class="badge-faction badge-mando">Guild</span></td>
+              <td>Beskar Supply Chain Smart Contract</td>
+              <td>9,510 PTS</td>
+            </tr>
+            <tr>
+              <td class="rank-num">#04</td>
+              <td><strong>R2D2_Assembly</strong></td>
+              <td><span class="badge-faction badge-jedi">Jedi</span></td>
+              <td>Astromech Speech Synthesizer</td>
+              <td>9,220 PTS</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer style="text-align: center; margin-top: 4rem; padding: 2rem 0; color: var(--text-dim); border-top: 1px solid rgba(255,255,255,0.05);">
+      <p style="font-family: 'Orbitron', sans-serif; font-size: 0.85rem; letter-spacing: 1px;">
+        MAY THE VIBE CODE BE WITH YOU. ALWAYS.
+      </p>
+      <p style="font-size: 0.8rem; margin-top: 6px;">
+        Galactic Hackathon Organization Federation // Sector 001
+      </p>
+    </footer>
+
   </div>
 
-  <div class="card">
-    <h2>How to replace this page</h2>
-    <ol>
-      <li>Copy what Gemini gives you with the <b>copy button</b> on the code
-        block. Do not click and drag.</li>
-      <li>Open <code>index.html</code> here and click the pencil icon.</li>
-      <li><b>Ctrl+A</b> (<b>Cmd+A</b> on Mac), then <b>Delete</b>. All of it.
-        Yes, really.</li>
-      <li>Paste, commit, refresh.</li>
-    </ol>
+  <!-- Hyperspace Toggle Control -->
+  <button class="hyperspace-btn" onclick="toggleHyperspace()">
+    <span>🚀</span> <span id="hyperText">ENGAGE HYPERSPACE</span>
+  </button>
+
+  <!-- Registration Modal -->
+  <div class="modal-backdrop" id="registerModal">
+    <div class="modal-card">
+      <button class="close-modal" onclick="closeRegisterModal()">&times;</button>
+      <h2 style="font-family:'Orbitron', sans-serif; margin-bottom: 0.5rem; color: var(--text-main);">
+        Transponder Registration
+      </h2>
+      <p style="color: var(--text-dim); font-size: 0.9rem; margin-bottom: 1.5rem;">
+        Pledge your loyalty and register your code beacon for the competition.
+      </p>
+
+      <form onsubmit="handleRegister(event)">
+        <div class="form-group">
+          <label class="form-label">Callsign / Alias</label>
+          <input type="text" class="form-input" placeholder="e.g. Luke_Vibewalker" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Holonet Holo-Mail</label>
+          <input type="email" class="form-input" placeholder="jedi@rebellion.org" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Primary Faction</label>
+          <select class="form-select" required>
+            <option value="jedi">Jedi Order (Light-side AI)</option>
+            <option value="sith">Sith Empire (Dark-side Prompting)</option>
+            <option value="mando">Mandalorian Guild (Bounty Hunter / Rogue)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Primary Stack / Weapon of Choice</label>
+          <input type="text" class="form-input" placeholder="e.g. Claude 3.5, Cursor, Python, React" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 1rem;">
+          Transmit Credentials
+        </button>
+      </form>
+    </div>
   </div>
 
-  <footer>
-    Nothing on this page is precious. It exists so the link has something to
-    show before you have something of your own.
-  </footer>
+  <!-- JavaScript Engine -->
+  <script>
+    /* ==========================================================================
+       1. STARFIELD & HYPERSPACE CANVAS ANIMATION
+       ========================================================================== */
+    const canvas = document.getElementById('starfield');
+    const ctx = canvas.getContext('2d');
 
-</main>
+    let stars = [];
+    const numStars = 800;
+    let speed = 0.5;
+    let isHyperspace = false;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Star {
+      constructor() {
+        this.reset();
+      }
+
+      reset() {
+        this.x = (Math.random() - 0.5) * canvas.width * 2;
+        this.y = (Math.random() - 0.5) * canvas.height * 2;
+        this.z = Math.random() * canvas.width;
+        this.pz = this.z;
+      }
+
+      update() {
+        this.pz = this.z;
+        this.z -= speed;
+
+        if (this.z <= 0) {
+          this.reset();
+          this.z = canvas.width;
+          this.pz = this.z;
+        }
+      }
+
+      draw() {
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+
+        const x = (this.x / this.z) * canvas.width + cx;
+        const y = (this.y / this.z) * canvas.height + cy;
+
+        const px = (this.x / this.pz) * canvas.width + cx;
+        const py = (this.y / this.pz) * canvas.height + cy;
+
+        const radius = Math.max(0.1, (1 - this.z / canvas.width) * (isHyperspace ? 3 : 2));
+
+        ctx.beginPath();
+        if (isHyperspace) {
+          ctx.strokeStyle = getComputedStyle(document.body).getPropertyValue('--faction-color').trim() || '#00f0ff';
+          ctx.lineWidth = radius * 1.5;
+          ctx.moveTo(px, py);
+          ctx.lineTo(x, y);
+          ctx.stroke();
+        } else {
+          ctx.fillStyle = '#ffffff';
+          ctx.arc(x, y, radius, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+    }
+
+    for (let i = 0; i < numStars; i++) {
+      stars.push(new Star());
+    }
+
+    function animateStars() {
+      ctx.fillStyle = isHyperspace ? 'rgba(3, 7, 18, 0.25)' : 'rgba(3, 7, 18, 0.8)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      for (let star of stars) {
+        star.update();
+        star.draw();
+      }
+
+      requestAnimationFrame(animateStars);
+    }
+
+    animateStars();
+
+    function toggleHyperspace() {
+      playSaberAudio(isHyperspace ? 300 : 800, 0.4);
+      isHyperspace = !isHyperspace;
+      speed = isHyperspace ? 25 : 0.5;
+
+      const btnText = document.getElementById('hyperText');
+      btnText.innerText = isHyperspace ? "EXIT HYPERSPACE" : "ENGAGE HYPERSPACE";
+
+      logTerminal(isHyperspace ? "Hyperdrive engaged. Speed: Point 5 past lightspeed." : "Hyperdrive disengaged. Standard orbit.");
+    }
+
+
+    /* ==========================================================================
+       2. WEB AUDIO API SYNTHESIZER (Lightsaber Sound Effects)
+       ========================================================================== */
+    let audioCtx = null;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+    }
+
+    function playSaberAudio(freq = 400, duration = 0.3) {
+      try {
+        initAudio();
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        // Sawtooth gives that buzzy lightsaber pitch
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(freq * 0.4, audioCtx.currentTime + duration);
+
+        gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {
+        // Audio fallback silent ignore
+      }
+    }
+
+
+    /* ==========================================================================
+       3. FACTION THEME SWITCHER
+       ========================================================================== */
+    function switchFaction(faction) {
+      document.body.setAttribute('data-faction', faction);
+
+      const btns = document.querySelectorAll('.faction-btn');
+      btns.forEach(btn => btn.classList.remove('active'));
+
+      event.target.classList.add('active');
+
+      if (faction === 'jedi') {
+        playSaberAudio(600, 0.3);
+        logTerminal("Faction updated: JEDI ORDER [Light Side Synergy]");
+      } else if (faction === 'sith') {
+        playSaberAudio(200, 0.4);
+        logTerminal("Faction updated: SITH EMPIRE [Unlimited Power]");
+      } else {
+        playSaberAudio(400, 0.3);
+        logTerminal("Faction updated: MANDALORIAN GUILD [This is the Way]");
+      }
+    }
+
+
+    /* ==========================================================================
+       4. HOLOCRON PROMPT GENERATOR
+       ========================================================================== */
+    const prompts = [
+      "Build a real-time targeting computer UI for T-65B X-Wing fighters using WebGL and Claude-3.5 agentic API.",
+      "Synthesize an AI-powered Sith Holocron chat assistant that translates complex Kubernetes logs into High Sith dialect warnings.",
+      "Create a zero-knowledge cryptography smart contract for trading Beskar ingots anonymously across Tatooine outer-rim nodes.",
+      "Develop a Droideka autonomous pathfinding simulator utilizing WebAssembly and reinforcement learning neural networks.",
+      "Write a minimalist code-golf algorithm that calculates hyperdrive jump coordinates avoiding gravity wells in under 120 bytes.",
+      "Build an interactive soundboard that turns keyboard keystrokes into R2-D2 beep-boop telemetry data streams."
+    ];
+
+    function generateVibePrompt() {
+      playSaberAudio(500, 0.2);
+      const display = document.getElementById('promptDisplay');
+      const randomPrompt = prompts[Math.floor(Math.random() * prompts.length)];
+
+      display.style.opacity = 0;
+      setTimeout(() => {
+        display.innerText = `> ${randomPrompt}`;
+        display.style.opacity = 1;
+      }, 150);
+
+      logTerminal("Holocron query executed. New Vibe prompt extracted.");
+    }
+
+    function copyPrompt() {
+      const text = document.getElementById('promptDisplay').innerText;
+      navigator.clipboard.writeText(text.replace('> ', ''));
+      playSaberAudio(700, 0.15);
+      logTerminal("Prompt copied to clipboard buffer.");
+    }
+
+
+    /* ==========================================================================
+       5. COUNTDOWN TIMER
+       ========================================================================== */
+    // Set deadline 2 days from now
+    const targetDate = new Date().getTime() + (2 * 24 * 60 * 60 * 1000) + (14 * 60 * 60 * 1000);
+
+    function updateTimer() {
+      const now = new Date().getTime();
+      const difference = targetDate - now;
+
+      if (difference > 0) {
+        const d = Math.floor(difference / (1000 * 60 * 60 * 24));
+        const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((difference % (1000 * 60)) / 1000);
+
+        document.getElementById('days').innerText = String(d).padStart(2, '0');
+        document.getElementById('hours').innerText = String(h).padStart(2, '0');
+        document.getElementById('mins').innerText = String(m).padStart(2, '0');
+        document.getElementById('secs').innerText = String(s).padStart(2, '0');
+      }
+    }
+
+    setInterval(updateTimer, 1000);
+    updateTimer();
+
+
+    /* ==========================================================================
+       6. TERMINAL LOGGING & MODAL
+       ========================================================================== */
+    function logTerminal(message) {
+      const log = document.getElementById('terminalLog');
+      const line = document.createElement('div');
+      line.className = 'terminal-line';
+      line.innerHTML = `<span class="terminal-prompt">[SYSTEM]:</span> ${message}`;
+      log.appendChild(line);
+      log.scrollTop = log.scrollHeight;
+    }
+
+    function openRegisterModal() {
+      playSaberAudio(450, 0.2);
+      document.getElementById('registerModal').classList.add('open');
+    }
+
+    function closeRegisterModal() {
+      document.getElementById('registerModal').classList.remove('open');
+    }
+
+    function handleRegister(e) {
+      e.preventDefault();
+      playSaberAudio(650, 0.4);
+      closeRegisterModal();
+      logTerminal("Registration received! Holonet transponder beacon active.");
+
+      // Add user to leaderboard demo
+      const body = document.getElementById('leaderboardBody');
+      const newRow = document.createElement('tr');
+      newRow.innerHTML = `
+        <td class="rank-num">#05</td>
+        <td><strong>You (Transponder Active)</strong></td>
+        <td><span class="badge-faction badge-jedi">Registered</span></td>
+        <td>New Submission Pending</td>
+        <td>10,000 PTS</td>
+      `;
+      body.appendChild(newRow);
+    }
+
+    function scrollToSection(id) {
+      document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Global initial click to enable Audio Context smoothly
+    window.addEventListener('click', () => {
+      initAudio();
+    }, { once: true });
+  </script>
 </body>
 </html>
